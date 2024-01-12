@@ -13,5 +13,5 @@ const plannersSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-const Cars = mongoose.model("planners", plannersSchema);
+const Planners = mongoose.model("planners", plannersSchema);
 module.exports = Planners;

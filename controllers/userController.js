@@ -95,11 +95,28 @@ const getUserById = async(Id)=>{
     } catch (error) {
       return error;
     }
-  }
+  };
+
+  const updatePassword = async (req, res) => {
+    const { password } = req.body;
+    const { Id } = req.params;
+    try {
+        if(!Id)throw Error("no id passed as parameter")
+        if (!password) throw Error("Password field can not be empty")
+        const salt = await bcrypt.genSalt(10);
+        const hashedPassword = await bcrypt.hash(password, salt);
+        const changePassword = await Users.findByIdAndUpdate({ _id:Id }, { password: hashedPassword });
+        const user=await getUserById(Id);
+        res.status(200).json({ message: "Your password updated successfully" ,user})
+    } catch (error) {
+        res.status(500).json({ message: 'Failed to update the password' });
+    }
+}
 module.exports = {
      register,
      login,
      deleteUser,
      getAll,
      updateUser,
+     updatePassword
 };
