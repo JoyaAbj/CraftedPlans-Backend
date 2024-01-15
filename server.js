@@ -7,6 +7,7 @@ const connection = require('./config/connection');
 const productsRoute=require('./routes/productsRoute');
 const reviewsRoute=require('./routes/reviewsRoute');
 const userRoute=require('./routes/userRoute');
+const templatesRoute=require('./routes/templatesRoute');
 
 
 const express=require('express');
@@ -21,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 // app.use('/planners',plannersRoute);
 app.use('/products',productsRoute);
 app.use('/reviews',reviewsRoute);
-// app.use('/templates',templatesRoute);
+app.use('/templates',templatesRoute);
 app.use('/users',userRoute);
 
 app.listen(process.env.PORT,()=>{

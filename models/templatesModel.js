@@ -2,11 +2,12 @@ const mongoose = require("mongoose");
 
 const templatesSchema = new mongoose.Schema(
   {
-    image: {type: String, required: true },
+    image: {type: Array, required: true },
     category: { type: String, required: true },
     price: { type: Number, required: true },
+    name: {type: String, required: true}
   },
 );
 
-const Cars = mongoose.model("templates", templatesSchema);
-module.exports = templates;
+const Templates = mongoose.model("templates", templatesSchema);
+module.exports = Templates;

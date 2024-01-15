@@ -3,12 +3,12 @@ const mongoose = require("mongoose");
 
 const plannersSchema = new mongoose.Schema(
   {
-    cover: { type: String, required: true },
-    personalInformation: { type: String, required: true },
-    events: { type: String, required: true },
-    price: { type: Number, required: true },
-    pages: { type: String, required: true },
-    addOns: { type: String, required: true },
+    cover: {type: mongoose.Schema.Types.ObjectId, ref: "templates", required:true},
+    personalInformation: {type: mongoose.Schema.Types.ObjectId, ref: "templates", required:true},
+    events: {type: mongoose.Schema.Types.ObjectId, ref: "templates", required:true},
+    price: {type: mongoose.Schema.Types.ObjectId, ref: "templates", required:true},
+    pages: {type: mongoose.Schema.Types.ObjectId, ref: "templates", required:true},
+    addOns: {type: mongoose.Schema.Types.ObjectId, ref: "templates", required:true},
   },
   { timestamps: true }
 );
