@@ -121,38 +121,42 @@ const getTemplateById = async (req, res) => {
   };
 
   const updateTemplate = async (req, res) => {
-    const {
-        category,
-        price,
-        name,
-      } = req.body;
+    const { category, price, name } = req.body;
     const { Id } = req.params;
-  
+
     try {
-      const template = await getATemplateById(Id);
-      
-      
-      
-  
-      const updateTemplate = await Templates.findByIdAndUpdate(
-        { _id: Id },
-        {
+        const template = await getATemplateById(Id);
+
+        let image1, image2, image3;
+        if (req.files) {
+            // Assuming you have three files for images
+            image1 = await imageUpload(req.files[0]);
+            image2 = await imageUpload(req.files[1]);
+            image3 = await imageUpload(req.files[2]);
+        }
+
+        const updateData = {
             category,
             price,
             name,
+        };
+
+        // If images are provided, add them to the update data
+        if (image1 && image2 && image3) {
+            updateData.image = [image1.downloadURL, image2.downloadURL, image3.downloadURL];
         }
-      );
-  
-      res.status(200).json({ message: "Template updated successfully", template: updateTemplate });
+
+        const updateTemplate = await Templates.findByIdAndUpdate(
+            { _id: Id },
+            updateData,
+            { new: true } 
+        );
+
+        res.status(200).json({ message: "Template updated successfully", template: updateTemplate });
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Failed to update template", error: error.message });
+        res.status(500).json({ message: "Failed to update template", error: error.message });
     }
-  };
-
-  
-
+};
 
   module.exports = {
     getTemplateById,

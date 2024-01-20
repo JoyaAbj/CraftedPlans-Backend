@@ -45,7 +45,7 @@ const getPlannerById = async (req, res) => {
 
 const getAllPlanners = async (_, res) => {
     try {
-      const planners = await Planners.find({});
+      const planners = await Planners.find({}).populate("cover").populate("pages").populate("addOns");
       res.status(200).json({ message: "All planners retrieved successfully", planners });
     } catch (error) {
       res.status(500).json({
@@ -92,6 +92,6 @@ module.exports = {
     getPlannerById,
     getAllPlanners,
     getPlannerByCover,
-    updatePlanner,
+    // updatePlanner,
     deletePlanner,
   };
