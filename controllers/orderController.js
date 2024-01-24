@@ -24,7 +24,7 @@ const add = async (req, res) => {
 };
 const getAll = async (_, res) => {
   try {
-    const allOrders =await Order.find({});
+    const allOrders =await Order.find().populate("products", "name");
     if (!allOrders) throw Error("Failed to get all from order");
     res
       .status(200)
