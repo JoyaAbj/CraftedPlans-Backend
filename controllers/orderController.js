@@ -3,14 +3,14 @@ const Planners = require("../models/plannersModel");
 const Products = require("../models/productsModel");
 // userId cars shipmentId status
 const add = async (req, res) => {
-  const { userId, planners, products, status, address } = req.body;
+  const { userID, planners, products, status, address } = req.body;
   try {
     // Check if required fields are present (you can uncomment and modify this check if needed)
     // if (!userId || !planners || !products || !status || !address)
     //   throw Error("All fields must be filled");
 
     // Create an order in the database
-    const result = await Order.create({ userId, planners, products, status, address });
+    const result = await Order.create({ userID, planners, products, status, address });
 
     // Check if the order creation was successful
     if (!result) throw Error("An error occurred while adding an order");
@@ -24,7 +24,8 @@ const add = async (req, res) => {
 };
 const getAll = async (_, res) => {
   try {
-    const allOrders =await Order.find().populate("products", "name");
+    const allOrders =await Order.find().populate("userID").populate("products").populate("planners");
+    console.log(allOrders)
     if (!allOrders) throw Error("Failed to get all from order");
     res
       .status(200)

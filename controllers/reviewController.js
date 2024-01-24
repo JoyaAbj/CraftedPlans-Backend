@@ -1,14 +1,14 @@
 const Review = require("../models/reviewModel");
 
 const add = async (req, res) => {
-    const {userID} = req.body;
+    const {fullName} = req.body;
     const {comment} = req.body;
     const {rating} = req.body;
 
     try {
-        if (!comment || !rating || !userID)
+        if (!comment || !rating || !fullName)
         throw Error("All fields must be filled");
-      const result = await Review.create({ comment, rating, userID });
+      const result = await Review.create({ comment, rating, fullName });
       if (!result) throw Error("An error occured during adding a review");
       res.status(200).json({ message: "A review added successfully", result });
     } catch (error) {
@@ -57,22 +57,27 @@ const add = async (req, res) => {
   };
   const updateReviewById = async (req, res) => {
     const { Id } = req.params;
-    const { userID, comment, rating } = req.body;
+    const { fullName, comment, rating } = req.body;
+  
     try {
-      if (!userID || !comment || !rating)
+      if (!fullName || !comment || !rating)
         throw Error("All fields must be filled");
-      const updateOne = await Review.findOneAndUpdate(
+  
+      const updateOne = await Review.findByIdAndUpdate(
         { _id: Id },
-        { userID, comment, rating }
+        { fullName, comment, rating },
+        { new: true } // Return the modified document
       );
-      if (!updateOne) throw Error("An error occured while updating a review");
-      res.status(200).json({ message: "A review  updated successfully" });
+  
+      if (!updateOne)
+        throw Error("An error occurred while updating the review");
+  
+      res.status(200).json({ message: "Review updated successfully", updateOne });
     } catch (error) {
-      res
-        .status(500)
-        .json({ message: "Failed to update a review", error: error.message });
+      res.status(500).json({ message: "Failed to update the review", error: error.message });
     }
   };
+  
   module.exports = {
     add,
     getAll,
